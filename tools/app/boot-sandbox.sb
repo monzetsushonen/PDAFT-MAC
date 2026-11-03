@@ -1,0 +1,10 @@
+(version 1)
+(allow default)
+(deny file-write*)
+(allow file-write*
+    (subpath (param "PDAFT_WORK_ROOT"))
+    (subpath "/private/tmp")
+    (literal "/dev/null")
+    (literal "/dev/zero")
+    (literal "/dev/tty")
+    (literal "/dev/urandom"))
