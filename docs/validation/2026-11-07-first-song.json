@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-07",
+  "timezone": "Asia/Shanghai",
+  "scope": "One official 3D song and current costume, offline Guest, 1280x720; complete P2 not accepted",
+  "route": "Original x86_64 PDAFT on ARM64 Wine/FEX with native WineMetalGL/Metal",
+  "runtime": {
+    "name": "MetalSharp Wine",
+    "version": "5.0",
+    "archiveSHA256": "a6298e15aa4f98e76486f6988f6d14943cfc41721e238c2426dde5c5a5597889",
+    "WineMetalGLCommit": "ed55ccaa535924b8d95f04cb78359bf27ed41668",
+    "pipelineArchiveEnabled": false
+  },
+  "pins": {
+    "gameSHA256": "8bad363bafa079c5974daba8a4cf2e2edf91f227686cbf99b45d44786d2de5af",
+    "PDLoaderCommit": "becac44e",
+    "TLACSHA256": "9b713927e729e14d3f8265eb5fff1d6b91af71168723b4706b4ee381192f4707",
+    "DivaGLVersion": "0.11.0.0",
+    "testedAdapterSHA256": "7ba7919ad19f4a5932ea5b417333da2fb52fa53c522fd8d3f1b49ca9853edbde"
+  },
+  "host": {
+    "hardware": "Apple M3 Max",
+    "macOS": "27.3 (26C5035r)",
+    "processCodeType": "ARM64",
+    "FEXMapped": true,
+    "nativeWineMetalGLMapped": true
+  },
+  "song": {
+    "name": "Tell Your World",
+    "pv": 638,
+    "difficulty": "EASY",
+    "difficultyCode": 0,
+    "ex": false
+  },
+  "autoplayVersion": 3,
+  "nativeResult": {
+    "pv": 638,
+    "difficulty": 0,
+    "ex": 0,
+    "score": 184970,
+    "rawPercent": 10057,
+    "combo": 204,
+    "holdScore": 0,
+    "slideScore": 27940,
+    "cool": 204,
+    "fine": 0,
+    "safe": 0,
+    "sad": 0,
+    "worst": 0
+  },
+  "stateSequence": [
+    [
+      2,
+      12
+    ],
+    [
+      2,
+      13
+    ],
+    [
+      2,
+      15
+    ],
+    [
+      2,
+      14
+    ]
+  ],
+  "userConfirmed": {
+    "wholeSongWithoutComboBreak": true,
+    "reachedOriginalResults": true,
+    "visualsAndMusicNormal": true,
+    "returnedToSongSelectionNormally": true
+  },
+  "internalTargetObservations": {
+    "cool": 236,
+    "worst": 0,
+    "note": "Includes slider internals; not chart note count."
+  },
+  "checks": {
+    "inputBoundary": 24,
+    "scheduler": 31,
+    "total": 55
+  },
+  "observedLateWindows": 0,
+  "originalJudgmentScoreAndTimelineModified": false,
+  "formalScoreSaver": false,
+  "customModsLoaded": false,
+  "videoMVEnabled": false,
+  "HDREnabled": false,
+  "MetalFXEnabled": false,
+  "displayFPSMeasured": false,
+  "preciseAVSyncMeasured": false,
+  "inputLatencyMeasured": false,
+  "normalExitAndSaveAccepted": false,
+  "launcher": {
+    "architecture": "arm64",
+    "adHocSignatureVerified": true,
+    "CLIPreflightPassed": true,
+    "buttonUIAccepted": false,
+    "portableImportAccepted": false
+  },
+  "completeP2": false,
+  "evidenceSnapshotSHA256": "3846282d9963245c143405196c4cf828086cfa99ceafa9d49a0c61e3ad50b221",
+  "limitations": [
+    "One EASY chart and current costume only; no blanket all-song/mod/character claim",
+    "HOLD bonus and broader chart coverage unaccepted",
+    "Display FPS, precise audio/video/input latency and timing accuracy unmeasured",
+    "ASF/video MV remains disabled",
+    "HDR/MetalFX off",
+    "Normal game quit and settings-save acceptance still pending",
+    "Native App buttons not independently inspected; build/signature/preflight passed"
+  ]
+}
