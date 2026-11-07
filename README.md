@@ -1,37 +1,47 @@
 # PDAFT-MAC
 
-实验性 macOS 启动器、画面共享与 MetalFX 输出。当前不是完整原生 arm64 游戏引擎：前端使用 arm64，游戏仍通过 x86_64 Wine/Rosetta 与 DivaGL/OpenGL 执行。完整原生 arm64 是后续目标。
+保留原版 Windows x86_64 PDAFT，通过 **ARM64 Wine / FEX / WineMetalGL** 在 Apple Silicon macOS 上运行的实验项目。macOS 启动器与兼容运行时使用 ARM64，原版游戏核心保持 x86_64；当前路线不依赖 Rosetta 进程转译。完整引擎重写与净室开发保持暂停。
 
-## 下载与准备
+## 2026-11-07 实测进度
 
-游戏本体、官方更新、补丁与 MOD 请通过原站自行准备：**https://rentry.co/PDAFTforPC** 。该页面已停止维护，MOD 组合可能过时。本仓库和 DMG 不镜像任何游戏本体、MOD、补丁、中文文本/歌词、第三方游戏插件、Wine 或 VC 安装程序。
+- P1：原版启动、进入选曲已通过。CPU / WGL 探针及实际进程采样确认 ARM64 宿主、FEX 与原生 WineMetalGL 执行链。
+- P2：首个完整 3D 曲目 **Tell Your World / EASY** 通过离线 AutoPlay v3：**204 COOL、204 连击、184970 分，FINE / SAFE / SAD / WORST 全为 0**。用户确认画面、音乐、结算和返回选曲正常。
+- AutoPlay 修正同键连打的按下边沿、滑条持续接触与长滑条延续；24 项输入边界检查和 31 项调度回归检查通过。判定、得分、谱面和原版时间轴保持不变。
+- 当前基线为 1280×720、离线 Guest、仅官方 MDATA；正式成绩保存关闭。视频 MV、HDR、MetalFX 在此基线关闭。
 
-1. 从原站的 Game、Patch、PD Loader 等章节准备需要的本地文件。先解压本体，将更新中的 mdata 合并到游戏目录。首版只接受文件夹，不接受 ZIP / 7z。
-2. 游戏目录应包含 diva.exe、rom、firm、mdata。当前仅接受 SHA256 为 `8bad363bafa079c5974daba8a4cf2e2edf91f227686cbf99b45d44786d2de5af` 的已验证可执行文件，以及 M215 至 M270 更新。
-3. 准备单独的运行依赖目录：`Bootstrap/`（PD Loader 配置、dinput8.dll、plugins/TLAC.dva、plugins/Render.dva、plugins/Patches.dva、plugins/DivaSound.dva、plugins/DivaGL.dva 等）、`Wine/`（含 bin/wine64 与 GStreamer.framework）、`vc_redist.x64.exe`。插件版本与配置来自测试过的 PD Loader becac44e / DivaGL 0.11.0.0；其他版本尚未验证。现有私人测试 App 的 Contents/Resources 可以作为本机依赖目录使用，但不要上传或分发它。
-4. 使用 Apple Silicon Mac、macOS 13+、Rosetta 2 和外置 APFS 运行目录。游戏资源可以位于 exFAT；运行前缀需要 APFS 符号链接。
-5. 从 DMG 将 PDAFT MAC.app 复制到可写目录后打开，先选择外置 APFS 运行位置，设置语言/分辨率/特效，再选择合并后的游戏目录与运行依赖目录。菜单可重新选择目录。游戏原始文件只读，前缀、配置与缓存写入独立运行目录。
+首曲通过不等于全部兼容。其他谱面、HOLD 奖励、多角色/服装、MOD、视频 MV、显示帧率稳定性、精确音画/输入延迟和正常退出/设置保存仍需验收。
 
-## 语言与画面
+详见 [开发路线](ARM64-ROADMAP.md)、[兼容测试与构建](docs/COMPATIBILITY.md)、[本次验收记录](docs/validation/2026-11-07-first-song.md)及[结构化结果](docs/validation/2026-11-07-first-song.json)。
 
-默认 English；实际语言取决于用户导入的资源。中文需要用户在依赖目录额外提供兼容的 Localization 数据与字体，精简版不包含中文补丁。未安装时选择中文会明确报错，可改选 English / 日本語。
+## 游戏与依赖准备
 
-整帧 MetalFX Spatial 支持 1080p / 1440p / 2160p 输出。HDR 是仅 MV 的实验性 SDR→EDR 高光增强，UI 保持 SDR；不是原始场景 HDR。AutoPlay 用于离线测试，不提交正式成绩。Aime/档案/成绩同步尚未接入。
+游戏本体、官方更新、补丁和 MOD 请通过原始项目主页自行准备：**https://rentry.co/PDAFTforPC** 。保留此原始 URL；本仓库的中文说明是本项目适配说明，并非原页面全文翻译。
 
-## 已知限制
+本仓库仅发布适配源码和说明，不提供游戏资源、MOD、第三方补丁/插件、Wine、编译器、密钥、个人存档或卡信息。正式安装包继续采用无资源精简方案，依赖用户导入合法取得的本体与补丁。
 
-Ghost Rule 的既有研究构建有效采样约43–45fps；稳定60fps、载入停顿及所有HDR视觉异常尚未解决。公开包的首次导入与启动验证记录见 release notes。包使用临时本地签名，未作 Developer ID 签名或公证。互斥皮肤只启用一套；White Rainbow 已知结算崩溃。
+当前兼容实验固定以下版本：
 
-## 构建
+- 原版 7.10 x86_64 主程序，SHA256：`8bad363bafa079c5974daba8a4cf2e2edf91f227686cbf99b45d44786d2de5af`。
+- PD-Loader `becac44e`，其中 TLAC SHA256：`9b713927e729e14d3f8265eb5fff1d6b91af71168723b4706b4ee381192f4707`。
+- DivaGL `0.11.0.0`；[MetalSharp Wine v5.0](https://github.com/metalsharp/MetalSharp-Wine/releases/tag/v5.0)。
 
-安装 Xcode 命令行工具及 macOS SDK，运行 `python3 tools/build-public.py --output /path/on/external/ssd/build`。打包使用 `hdiutil create -srcfolder /path/on/external/ssd/build -format UDZO -volname PDAFT-MAC PDAFT-MAC.dmg`。不要将游戏、依赖目录或测试日志放进构建目录。
+这些组件由用户自行准备，来源与许可独立于本仓库，见 [THIRD-PARTY.md](THIRD-PARTY.md)。原始游戏只读使用；运行覆盖目录、前缀、缓存和隔离 RAM 放在外置 SSD。
 
-项目适配源码见 native/，第三方来源见 [THIRD-PARTY.md](THIRD-PARTY.md)。本仓库不属于 SEGA 或 Crypton 官方项目。
+## 构建当前实验代码
 
-## 准备依赖工具
+安装 Xcode 命令行工具后，可独立运行不含游戏资源的输入测试：
 
-`python3 tools/prepare-components.py --pd-loader /path/PD-Loader-becac44e.zip --divagl /path/DivaGL-v0.11.0.0.dva --wine /path/wine --vc-redist /path/vc_redist.x64.exe --output /path/on/apfs/components`
+```sh
+python3 tools/compatibility/build-adapter.py \
+  --checks-only --output /Volumes/YourSSD/PDAFT-build/input-checks
+```
 
-此工具只读取用户下载的文件，验证指定插件版本并生成本地配置；输出绝不能提交到仓库或放入发布 DMG。可选中文数据需另行自行提供。
+Windows 测试插件的构建还需要用户提供 ARM64 Wine、专用编译前缀及 ARM64 MSVC 链接工具。当前本地诊断启动器依赖已建立的外置实验目录，不具备新的通用资源导入流程；具体布局和命令见 [兼容构建说明](docs/COMPATIBILITY.md)。源码目录为 `native/Compatibility/`。
 
-后续优先级：[完整原生 arm64 路线](ARM64-ROADMAP.md)。当前研究版不承诺 macOS 28 可运行。
+此轮更新为源码与验收记录，不替换旧 DMG。完整的可导入、可分发无资源 App / DMG 仍属 P3。
+
+## 历史研究版
+
+已有 `native/FrameBridge/`、`native/Localization/`、`native/MetalFX/` 和旧构建工具保留供对照。旧 0.2.x 使用 x86_64 Wine / Rosetta，其 MetalFX / HDR / 本地化结果不能代替当前 ARM64 Wine 路线验收，安装与构建说明见 [旧版文档](docs/LEGACY-0.2.md)。
+
+本项目不属于 SEGA 或 Crypton 官方项目。

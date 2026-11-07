@@ -20,3 +20,14 @@ Bootstrap/
 /Localization/
 reports/
 logs/
+
+# Private compatibility experiments and compiler outputs
+*.o
+*.obj
+*.lib
+*.exp
+*.dylib
+*.app/
+*.pyc
+__pycache__/
+/compatibility/
